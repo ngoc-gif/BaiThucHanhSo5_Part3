@@ -1,0 +1,38 @@
+
+<h2>Quản lý sản phẩm</h2>
+
+<% if (currentUser) { %>
+  <a href="/products/new" class="btn btn-primary mb-3">+ Thêm sản phẩm</a>
+<% } %>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Tên</th>
+      <th>Giá</th>
+      <th>Số lượng</th>
+      <th>Nhà cung cấp</th>
+      <th>Hành động</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% products.forEach(p => { %>
+      <tr>
+        <td><%= p.name %></td>
+        <td><%= p.price %></td>
+        <td><%= p.quantity %></td>
+        <td><%= p.supplier ? p.supplier.name : "—" %></td>
+        <td>
+          <% if (currentUser) { %>
+            <a href="/products/<%= p._id %>/edit" class="btn btn-sm btn-info">Sửa</a>
+            <form action="/products/<%= p._id %>?_method=DELETE" method="post" class="d-inline">
+              <button class="btn btn-sm btn-danger">Xóa</button>
+            </form>
+          <% } else { %>
+            <span class="text-muted">Đăng nhập để thao tác</span>
+          <% } %>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>

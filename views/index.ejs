@@ -1,0 +1,39 @@
+<h1>Danh sách sản phẩm</h1>
+<div class="mb-3">
+  <form class="row g-2" action="/" method="get">
+    <div class="col-auto">
+      <select name="supplierId" class="form-select" onchange="this.form.submit()">
+        <option value="">-- Tất cả nhà cung cấp --</option>
+        <% suppliers.forEach(s => { %>
+          <option value="<%= s._id %>" <%= (s._id == (typeof supplierId !== 'undefined' ? supplierId : '')) ? 'selected' : '' %>><%= s.name %></option>
+        <% }) %>
+      </select>
+    </div>
+  </form>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr><th>Tên</th><th>Giá</th><th>Số lượng</th><th>Nhà cung cấp</th><th>Hành động</th></tr>
+  </thead>
+  <tbody>
+    <% products.forEach(p => { %>
+      <tr>
+        <td><%= p.name %></td>
+        <td><%= p.price %></td>
+        <td><%= p.quantity %></td>
+        <td><%= p.supplier ? p.supplier.name : '—' %></td>
+        <td>
+          <% if (currentUser) { %>
+            <a class="btn btn-sm btn-primary" href="/products/<%= p._id %>/edit">Sửa</a>
+            <form class="d-inline" action="/products/<%= p._id %>?_method=DELETE" method="post">
+              <button class="btn btn-sm btn-danger">Xóa</button>
+            </form>
+          <% } else { %>
+            <span class="text-muted">Đăng nhập để quản lý</span>
+          <% } %>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
